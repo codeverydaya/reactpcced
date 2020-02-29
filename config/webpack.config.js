@@ -339,7 +339,7 @@ module.exports = function(webpackEnv) {
                 formatter: require.resolve('react-dev-utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
                 resolvePluginsRelativeTo: __dirname,
-                
+
               },
               loader: require.resolve('eslint-loader'),
             },
@@ -372,8 +372,12 @@ module.exports = function(webpackEnv) {
                 customize: require.resolve(
                   'babel-preset-react-app/webpack-overrides'
                 ),
-                
+
                 plugins: [
+                  ['import',
+                    {
+                      libraryName:'antd',style:true
+                    }],
                   [
                     require.resolve('babel-plugin-named-asset-import'),
                     {
@@ -385,6 +389,7 @@ module.exports = function(webpackEnv) {
                       },
                     },
                   ],
+
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -414,7 +419,7 @@ module.exports = function(webpackEnv) {
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
-                
+
                 // Babel sourcemaps are needed for debugging into node_modules
                 // code.  Without the options below, debuggers like VSCode
                 // show incorrect code and set breakpoints on the wrong lines.
@@ -444,6 +449,21 @@ module.exports = function(webpackEnv) {
             },
             // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
             // using the extension .module.css
+            {
+              test: /\.less$/,
+              use: ['style-loader', 'css-loader',
+                {
+                  loader: "less-loader",
+                  options: {
+                    // modifyVars: {
+                    //   'primary-color': '#1DA57A',
+                    //   'link-color': '#1DA57A',
+                    //   'border-radius-base': '2px',
+                    // },
+                    javascriptEnabled: true
+                  }
+              }]
+            },
             {
               test: cssModuleRegex,
               use: getStyleLoaders({
